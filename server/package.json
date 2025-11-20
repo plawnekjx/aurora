@@ -4,10 +4,10 @@
   "description": "Aurora Server",
   "repository": {
     "type": "git",
-    "url": "git://github.com/frida/aurora"
+    "url": "git://github.com/plawnekjx/aurora"
   },
   "keywords": [
-    "frida"
+    "plawnekjx"
   ],
   "author": "Ole André Vadla Ravnås",
   "license": "WXwindows",
@@ -15,7 +15,7 @@
   "devDependencies": {},
   "dependencies": {
     "express": "^4.12.3",
-    "frida": "^4.0.1",
+    "plawnekjx": "^4.0.1",
     "geoip-lite": "^1.1.6",
     "socket.io": "^1.3.5"
   }

@@ -207,11 +207,11 @@ define ["jquery", "beam/main", "./services", "three", "globe", "lcss!css/app", "
   class exports.Presenter extends beam.presenters.Presenter
     initialize: ->
       @reset()
-      @services.frida.capture.on('closed', @_onClosed)
+      @services.plawnekjx.capture.on('closed', @_onClosed)
 
     dispose: ->
       super
-      @services.frida.capture.off('closed', @_onClosed)
+      @services.plawnekjx.capture.off('closed', @_onClosed)
 
     reset: ->
       @processSelector = new ProcessSelector(this, @view.processSelector(), @services)
@@ -228,14 +228,14 @@ define ["jquery", "beam/main", "./services", "three", "globe", "lcss!css/app", "
         pid: pid
       })
 
-      request = @services.frida.capture.open(device, pid)
+      request = @services.plawnekjx.capture.open(device, pid)
       request.done =>
         @progress.update({
           state: 'attached'
           pid: pid
         })
         @progress.onCancel =>
-          @services.frida.capture.close(device, pid).always =>
+          @services.plawnekjx.capture.close(device, pid).always =>
             @progress.dispose()
             @progress = null
             @reset()
@@ -255,7 +255,7 @@ define ["jquery", "beam/main", "./services", "three", "globe", "lcss!css/app", "
         pid: pid
       })
       @progress.onCancel =>
-        @services.frida.capture.close(device, pid).always =>
+        @services.plawnekjx.capture.close(device, pid).always =>
           @progress.dispose()
           @progress = null
           @reset()
@@ -271,24 +271,24 @@ define ["jquery", "beam/main", "./services", "three", "globe", "lcss!css/app", "
         @view.onSelectedDeviceChanged(@_refreshProcesses)
 
         @_onAttach = null
-        @services.frida.on('attached', @_onAttached)
-        @services.frida.on('devices-changed', @_refreshDevices)
+        @services.plawnekjx.on('attached', @_onAttached)
+        @services.plawnekjx.on('devices-changed', @_refreshDevices)
         @_refreshDevices()
 
       dispose: ->
-        @services.frida.off('devices-changed', @_refreshDevices)
-        @services.frida.off('attached', @_onAttached)
+        @services.plawnekjx.off('devices-changed', @_refreshDevices)
+        @services.plawnekjx.off('attached', @_onAttached)
         super
 
       _refreshDevices: =>
         @view.setDevices([])
-        @services.frida.enumerateDevices().done (devices) =>
+        @services.plawnekjx.enumerateDevices().done (devices) =>
           @view.setDevices(devices)
           @_refreshProcesses()
 
       _refreshProcesses: =>
         @view.setProcesses([])
-        request = @services.frida.enumerateProcesses(@view.getSelectedDevice())
+        request = @services.plawnekjx.enumerateProcesses(@view.getSelectedDevice())
         request.done (processes) =>
           @view.setProcesses(processes)
         request.fail (error) ->
@@ -321,16 +321,16 @@ define ["jquery", "beam/main", "./services", "three", "globe", "lcss!css/app", "
       class Streams extends beam.presenters.Collection
         initialize: ->
           super(Stream)
-          for stream in @services.frida.capture.streams
+          for stream in @services.plawnekjx.capture.streams
             @add([stream])
-          @services.frida.capture.on('added', @_onAdded)
-          @services.frida.capture.on('updated', @_onUpdated)
+          @services.plawnekjx.capture.on('added', @_onAdded)
+          @services.plawnekjx.capture.on('updated', @_onUpdated)
           @_pullTimer = window.setInterval(@_pullStats, 1000)
 
         dispose: ->
           super
-          @services.frida.capture.off('added', @_onAdded)
-          @services.frida.capture.off('updated', @_onUpdated)
+          @services.plawnekjx.capture.off('added', @_onAdded)
+          @services.plawnekjx.capture.off('updated', @_onUpdated)
           window.clearInterval(@_pullTimer)
 
         _onAdded: (stream) =>
@@ -349,7 +349,7 @@ define ["jquery", "beam/main", "./services", "three", "globe", "lcss!css/app", "
                 @add([stream])
 
         _pullStats: =>
-          @services.frida.capture.pull(['stats'])
+          @services.plawnekjx.capture.pull(['stats'])
 
         class Stream extends beam.presenters.Presenter
           initialize: (@stream) ->
@@ -379,12 +379,12 @@ define ["jquery", "beam/main", "./services", "three", "globe", "lcss!css/app", "
 
       class Preview extends beam.presenters.Presenter
         initialize: ->
-          @services.frida.capture.on('updated', @_onUpdated)
+          @services.plawnekjx.capture.on('updated', @_onUpdated)
           @services.bus.on('stream:appended', @_onAppended)
 
         dispose: ->
           super
-          @services.frida.capture.off('updated', @_onUpdated)
+          @services.plawnekjx.capture.off('updated', @_onUpdated)
           @services.bus.off('stream:appended', @_onAppended)
 
         _onUpdated: (stream, updates) =>
@@ -413,7 +413,7 @@ define ["jquery", "beam/main", "./services", "three", "globe", "lcss!css/app", "
         _onAppended: (message, sender) =>
           if message.event.type == 'connect'
             properties = message.event.properties
-            @services.frida.geoip.lookup(properties.ip).done (geo) =>
+            @services.plawnekjx.geoip.lookup(properties.ip).done (geo) =>
               @view.addConnectDataPoint(properties.ip, properties.port, geo.latitude, geo.longitude)
 
 

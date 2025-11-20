@@ -1,12 +1,12 @@
 const app = require("express")();
-const frida = require("frida");
+const plawnekjx = require("plawnekjx");
 const fs = require("fs");
 const geoip = require("geoip-lite");
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const path = require("path");
 
-const deviceManager = frida.getDeviceManager();
+const deviceManager = plawnekjx.getDeviceManager();
 const handlers = {};
 var current = null;
 

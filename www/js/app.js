@@ -32,14 +32,14 @@ require(["jquery", "beam/main", "cs!app/services", "cs!app/app"], function($, be
     var registry = {};
 
     registry.bus = new beam.services.MessageBus(registry);
-    registry.frida = new services.Frida(registry);
+    registry.plawnekjx = new services.Plawnekjx(registry);
 
     return registry;
   };
 
   function startServices(services) {
     services.bus.start();
-    services.frida.start();
+    services.plawnekjx.start();
   }
 
   $(function() {

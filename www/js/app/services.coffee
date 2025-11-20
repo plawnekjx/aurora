@@ -2,7 +2,7 @@ define ["jquery", "beam/main"], ($, beam) ->
   services = {}
 
 
-  class services.Frida extends beam.services.Service
+  class services.Plawnekjx extends beam.services.Service
     initialize: ->
       @_client = new Client()
       @capture = new Capture(this, @services.bus)
@@ -38,7 +38,7 @@ define ["jquery", "beam/main"], ($, beam) ->
       @capture._onMessage(payload.device, payload.pid, payload.message, payload.data)
 
     class Capture extends beam.Events
-      initialize: (@frida, @bus) ->
+      initialize: (@plawnekjx, @bus) ->
         @_current = null
         @streams = []
 
@@ -48,7 +48,7 @@ define ["jquery", "beam/main"], ($, beam) ->
         @_current =
           device: device
           pid: pid
-        @frida._client.request('.attach', {
+        @plawnekjx._client.request('.attach', {
           device: device,
           pid: pid
         })
@@ -58,7 +58,7 @@ define ["jquery", "beam/main"], ($, beam) ->
         if @_current?
           if device != @_current.device or pid != @_current.pid
             throw new Error("invalid device or pid")
-          @frida._client.request('.detach', {
+          @plawnekjx._client.request('.detach', {
             device: device,
             pid: pid
           }).always =>
@@ -69,7 +69,7 @@ define ["jquery", "beam/main"], ($, beam) ->
         d
 
       pull: (fields) ->
-        @frida._client.request('.post-message', {
+        @plawnekjx._client.request('.post-message', {
           type: 'streams:pull',
           payload: fields
         })
@@ -97,7 +97,7 @@ define ["jquery", "beam/main"], ($, beam) ->
           @_trigger('closed', device, pid)
 
       _postMessage: (message) ->
-        @frida._client.request('.post-message', message)
+        @plawnekjx._client.request('.post-message', message)
 
       _onMessage: (device, pid, transportMessage, data) =>
         if transportMessage.type == 'send'
@@ -165,10 +165,10 @@ define ["jquery", "beam/main"], ($, beam) ->
               }, this)
 
     class Geoip
-      constructor: (@frida) ->
+      constructor: (@plawnekjx) ->
 
       lookup: (ip) ->
-        @frida._client.request('.lookup-ip', {
+        @plawnekjx._client.request('.lookup-ip', {
           ip: ip
         })
 
@@ -179,7 +179,7 @@ define ["jquery", "beam/main"], ($, beam) ->
       @_nextRequestId = 1
 
       @_socket = io("http://localhost:3000/")
-      window.fridaSocket = @_socket
+      window.plawnekjxSocket = @_socket
       @_socket.on('stanza', @_onStanza)
 
     request: (name, payload = {}) ->

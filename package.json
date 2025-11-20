@@ -4,10 +4,10 @@
   "description": "Aurora",
   "repository": {
     "type": "git",
-    "url": "git://github.com/frida/aurora"
+    "url": "git://github.com/plawnekjx/aurora"
   },
   "keywords": [
-    "frida"
+    "plawnekjx"
   ],
   "author": "Ole André Vadla Ravnås",
   "license": "WXwindows",
